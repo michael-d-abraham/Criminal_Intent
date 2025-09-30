@@ -1,111 +1,80 @@
-import { Stack, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-type CrimeItem = {
+// Will go into the crimpe page later
+type Crime = {
   id: string;
   title: string;
   details?: string;
-  occurredOn: string;
+  date: string;
   solved: boolean;
+  photoUri?: string | null;
 };
 
-const CRIMES: CrimeItem[] = [
+const DEFAULT_CRIMES: Crime[] = [
   {
     id: "ca-004",
     title: "Criminal Activity 4",
-    occurredOn: "2025-01-30T13:13:43.639Z",
+    details: "Briefed patrol on warehouse recon plan.",
+    date: "2025-01-30T13:13:43.639Z",
     solved: false,
+    photoUri: null,
   },
   {
     id: "ca-002",
     title: "Criminal Activity 2",
-    occurredOn: "2025-01-24T21:44:40.415Z",
+    date: "2025-01-24T21:44:40.415Z",
     solved: true,
     details: "Surveillance follow-up in Old Town district.",
+    photoUri: null,
   },
   {
     id: "ca-001",
     title: "Criminal Activity 1",
-    occurredOn: "2025-01-03T02:14:54.649Z",
+    date: "2025-01-03T02:14:54.649Z",
     solved: false,
+    photoUri: null,
   },
   {
     id: "test-001",
     title: "Testing",
-    occurredOn: "2025-02-18T22:05:05.951Z",
+    date: "2025-02-18T22:05:05.951Z",
     solved: true,
     details: "Internal QA scenario.",
+    photoUri: null,
   },
   {
     id: "ca-003",
     title: "Criminal Activity 3",
-    occurredOn: "2024-11-09T13:52:11.246Z",
+    date: "2024-11-09T13:52:11.246Z",
     solved: true,
-  },
-  {
-    id: "new-002",
-    title: "New 2~!",
-    occurredOn: "2025-02-18T21:59:04.778Z",
-    solved: false,
-    details: "Witness statements pending transcription.",
-  },
-  {
-    id: "new-001",
-    title: "New!",
-    occurredOn: "2025-02-18T21:58:44.900Z",
-    solved: false,
-  },
-  {
-    id: "ca-005",
-    title: "Criminal Activity 5",
-    occurredOn: "2025-01-11T16:59:08.202Z",
-    solved: false,
-  },
-  {
-    id: "misc-001",
-    title: "asdfasdfasdf",
-    occurredOn: "2025-02-18T22:06:50.903Z",
-    solved: true,
+    photoUri: null,
   },
 ];
 
 export default function Index() {
   const router = useRouter();
+  const crimes = DEFAULT_CRIMES;
 
   const handleSelectCrime = (crimeId: string) => {
     router.push({ pathname: "/crimepage", params: { crimeId } });
   };
 
-  const handleCreateCrime = () => {
-    router.push({ pathname: "/crimepage", params: { crimeId: "new" } });
-  };
-
   return (
     <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          title: "Criminal Intent",
-          headerStyle: { backgroundColor: "#6d28d9" },
-          headerTintColor: "#fff",
-          headerTitleStyle: { fontWeight: "700" },
-          headerRight: () => (
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Add crime"
-              style={styles.headerButton}
-              onPress={handleCreateCrime}
-            >
-              <Text style={styles.headerButtonText}>+</Text>
-            </Pressable>
-          ),
-        }}
-      />
-
       <FlatList
-        data={CRIMES}
+        data={crimes}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyStateTitle}>No crimes logged yet</Text>
+            <Text style={styles.emptyStateBody}>
+              Tap the + button to record your first case.
+            </Text>
+          </View>
+        )}
         renderItem={({ item }) => (
           <Pressable
             style={styles.listItem}
@@ -113,85 +82,83 @@ export default function Index() {
           >
             <View style={styles.listItemText}>
               <Text style={styles.listItemTitle}>{item.title}</Text>
-              <Text style={styles.listItemDate}>{item.occurredOn}</Text>
+              <Text style={styles.listItemMeta}>{formatDate(item.date)}</Text>
               {item.details ? (
-                <Text style={styles.listItemDetails}>{item.details}</Text>
+                <Text style={styles.listItemDetails} numberOfLines={1}>
+                  {item.details}
+                </Text>
               ) : null}
             </View>
-
-            {item.solved ? (
-              <MaterialCommunityIcons
-                name="handcuffs"
-                size={24}
-                color="#111827"
-              />
-            ) : null}
+            <Text style={styles.listItemStatus}>
+              {item.solved ? "Solved" : "Open"}
+            </Text>
           </Pressable>
         )}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
     </View>
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f3f4f6",
-  },
-  headerButton: {
-    marginRight: 16,
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "#5b21b6",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerButtonText: {
-    color: "#fff",
-    fontSize: 22,
-    fontWeight: "600",
-    marginTop: -2,
+    backgroundColor: "#f9fafb",
   },
   listContent: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    gap: 12,
   },
   listItem: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderRadius: 16,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 1,
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 12,
+    backgroundColor: "#ffffff",
+    borderColor: "#e5e7eb",
+    borderWidth: 1,
   },
   listItemText: {
     flex: 1,
-    paddingRight: 12,
-    gap: 4,
+    marginRight: 12,
   },
   listItemTitle: {
     fontSize: 18,
     fontWeight: "700",
     color: "#111827",
   },
-  listItemDate: {
-    fontSize: 14,
+  listItemMeta: {
+    fontSize: 13,
     color: "#6b7280",
+    marginTop: 2,
   },
   listItemDetails: {
     fontSize: 14,
     color: "#374151",
+    marginTop: 4,
+  },
+  listItemStatus: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#2563eb",
   },
   separator: {
-    height: 12,
+    height: 16,
+  },
+  emptyState: {
+    marginTop: 64,
+    alignItems: "center",
+  },
+  emptyStateTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#1f2937",
+  },
+  emptyStateBody: {
+    fontSize: 14,
+    color: "#6b7280",
+    marginTop: 4,
   },
 });
