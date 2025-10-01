@@ -1,10 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, useNavigation } from "expo-router";
 import React, { useLayoutEffect } from "react";
-import { Alert, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { stylesFromTheme, THEMES, useTheme } from "../components/Theme";
-import { clearCrimes } from "../lib/storage";
+import ThemeButton from "../components/theme_buttons";
 
 export default function SettingsScreen() {
   const nav = useNavigation();
@@ -33,38 +33,22 @@ export default function SettingsScreen() {
       <Stack.Screen options={{ headerShown: true }} />
 
       <Text
-        style={[S.text, { fontSize: 18, fontWeight: "700", marginBottom: 12 }]}
+        style={[S.text, { fontSize: 25, fontWeight: "800", marginBottom: 12, textAlign: "center" }]}
       >
-        Themes
+        Pick A Theme
       </Text>
 
-      <View style={{ gap: 10 }}>
+      <View style={{gap: 15, flex: 1, justifyContent: 'center' }}>
         {Object.entries(THEMES).map(([key, t]) => (
-          <Pressable
+          <ThemeButton
             key={key}
-            style={[
-              S.button,
-              {
-                borderWidth: theme.name === t.name ? 2 : 0,
-                borderColor: theme.tint,
-              },
-            ]}
+            isSelected={theme.name === t.name}
             onPress={() => setThemeName(key as keyof typeof THEMES)}
           >
-            <Text style={S.buttonText}>{t.name}</Text>
-          </Pressable>
+            {t.name}
+          </ThemeButton>
         ))}
       </View>
-
-      <Pressable
-        style={[S.button, { marginTop: 20 }]}
-        onPress={async () => {
-          await clearCrimes();
-          Alert.alert("Reset", "All crimes cleared.");
-        }}
-      >
-        <Text style={S.buttonText}>Reset Crimes (Testing)</Text>
-      </Pressable>
     </SafeAreaView>
   );
 }

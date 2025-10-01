@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from "react";
 
-const DEFAULT_THEME = "#6d28d9";
+const DEFAULT_THEME = "#E3F2FD";
 
 type ThemeContextValue = {
   contextTheme: string;

@@ -1,10 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
 } from "react";
 import { TextStyle, ViewStyle } from "react-native";
 
@@ -19,59 +19,59 @@ type Theme = {
 };
 
 export const THEMES: Record<string, Theme> = {
-  lBlue: {
-    name: "Light Blue",
-    bg: "#F7FAFF",
-    text: "#0B1220",
+  oceanBreeze: {
+    name: "Ocean Breeze",
+    bg: "#E3F2FD",
+    text: "#000000",
     card: "#FFFFFF",
-    tint: "#0A84FF",
-    buttonBg: "#E6F0FF",
-    inputBg: "#F0F4FF",
+    tint: "#0277BD",
+    buttonBg: "#BBDEFB",
+    inputBg: "#E1F5FE",
   },
-  lGreen: {
-    name: "Light Green",
-    bg: "#FAFFF7",
-    text: "#0F1A0F",
+  morningForest: {
+    name: "Morning Forest",
+    bg: "#E8F5E8",
+    text: "#000000",
     card: "#FFFFFF",
-    tint: "#34C759",
-    buttonBg: "#E8F9EE",
-    inputBg: "#F1FBF5",
+    tint: "#388E3C",
+    buttonBg: "#C8E6C9",
+    inputBg: "#E8F5E8",
   },
-  lPink: {
-    name: "Light Pink",
-    bg: "#FFF7FA",
-    text: "#0B1220",
+  sandstoneDunes: {
+    name: "Sandstone Dunes",
+    bg: "#FFF3E0",
+    text: "#000000",
     card: "#FFFFFF",
-    tint: "#FF4D8D",
-    buttonBg: "#FFE5EE",
-    inputBg: "#FFEEF4",
+    tint: "#FF6F00",
+    buttonBg: "#FFE0B2",
+    inputBg: "#FFF8E1",
   },
-  dBlue: {
-    name: "Dark Blue",
-    bg: "#0B1220",
-    text: "#EAF2FF",
-    card: "#121A2A",
-    tint: "#5AC8FA",
-    buttonBg: "#0F1A30",
-    inputBg: "#172036",
+  deepSpace: {
+    name: "Deep Space",
+    bg: "#0A0A0A",
+    text: "#FFFFFF",
+    card: "#1A1A1A",
+    tint: "#6A5ACD",
+    buttonBg: "#2A2A2A",
+    inputBg: "#1E1E1E",
   },
-  dPurple: {
-    name: "Dark Purple",
-    bg: "#151022",
-    text: "#F0E6FF",
-    card: "#1B1630",
-    tint: "#BF5AF2",
-    buttonBg: "#221B3D",
-    inputBg: "#241F3E",
+  midnightForest: {
+    name: "Midnight Forest",
+    bg: "#0D1B0D",
+    text: "#FFFFFF",
+    card: "#1A2A1A",
+    tint: "#4CAF50",
+    buttonBg: "#2A3A2A",
+    inputBg: "#1E2E1E",
   },
-  dGray: {
-    name: "Dark Gray",
-    bg: "#121212",
-    text: "#EDEDED",
-    card: "#1C1C1E",
-    tint: "#98989D",
-    buttonBg: "#2A2A2C",
-    inputBg: "#1E1E20",
+  volcanicEmber: {
+    name: "Volcanic Ember",
+    bg: "#1A0A0A",
+    text: "#FFFFFF",
+    card: "#2A1A1A",
+    tint: "#FF5722",
+    buttonBg: "#3A2A2A",
+    inputBg: "#2E1E1E",
   },
 };
 
@@ -81,7 +81,7 @@ type ThemeCtx = {
 };
 const ThemeContext = createContext<ThemeCtx | null>(null);
 const THEME_KEY = "theme_name_v1";
-const DEFAULT_NAME: keyof typeof THEMES = "lBlue";
+const DEFAULT_NAME: keyof typeof THEMES = "oceanBreeze";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [name, setName] = useState<keyof typeof THEMES>(DEFAULT_NAME);

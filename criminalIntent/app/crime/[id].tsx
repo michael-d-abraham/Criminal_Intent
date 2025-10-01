@@ -7,14 +7,14 @@ import * as ImagePicker from "expo-image-picker";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
-  Alert,
-  Image,
-  Modal,
-  Platform,
-  Pressable,
-  Text,
-  TextInput,
-  View,
+    Alert,
+    Image,
+    Modal,
+    Platform,
+    Pressable,
+    Text,
+    TextInput,
+    View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { stylesFromTheme, useTheme } from "../../components/Theme";
@@ -96,93 +96,177 @@ export default function CrimeDetail() {
   };
 
   return (
-    <SafeAreaView style={[S.screen, { padding: 12 }]}>
-      <View style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
-        <View style={{ width: 72, alignItems: "center" }}>
+    <SafeAreaView style={[S.screen, { padding: 16 }]}>
+      {/* Image and Title Section */}
+      <View style={{ flexDirection: "row", gap: 16, alignItems: "flex-start", marginBottom: 24 }}>
+        <View style={{ width: 120, alignItems: "center" }}>
           {photoUri ? (
             <Image
               source={{ uri: photoUri }}
-              style={{ width: 72, height: 72, borderRadius: 8 }}
+              style={{ 
+                width: 120, 
+                height: 120, 
+                borderRadius: 8,
+              }}
             />
           ) : (
             <View
               style={[
-                S.card,
                 {
-                  width: 72,
-                  height: 72,
+                  width: 120,
+                  height: 120,
+                  backgroundColor: "#f0f0f0",
+                  borderRadius: 8,
                   justifyContent: "center",
                   alignItems: "center",
+                  borderWidth: 1,
+                  borderColor: theme.text + "20",
                 },
               ]}
-            ></View>
+            />
           )}
-          <View style={{ height: 8 }} />
+          <View style={{ height: 12 }} />
           <Pressable
-            style={[S.button, { paddingVertical: 8, width: 72 }]}
+            style={[
+              {
+                backgroundColor: "#f0f0f0",
+                paddingVertical: 8,
+                paddingHorizontal: 12,
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: theme.text + "20",
+                alignItems: "center",
+                justifyContent: "center",
+                minWidth: 80,
+              }
+            ]}
             onPress={onPickPhoto}
             accessibilityLabel="Pick Photo"
           >
-            <Ionicons name="camera-outline" size={18} color={theme.text} />
+            <Ionicons name="camera-outline" size={20} color={theme.tint} />
           </Pressable>
         </View>
 
-        <View style={{ flex: 1, gap: 10 }}>
-          <Text style={[S.text]}>Title</Text>
+        <View style={{ flex: 1, gap: 12 }}>
+          <Text style={[S.text, { fontSize: 16, fontWeight: "600" }]}>Title</Text>
           <TextInput
             value={title}
             onChangeText={setTitle}
-            placeholder="Enter title"
-            placeholderTextColor={theme.text + "88"}
-            style={S.input}
+            placeholder="Title"
+            placeholderTextColor={theme.text + "60"}
+            style={[
+              S.input, 
+              { 
+                fontSize: 16,
+                paddingVertical: 12,
+                paddingHorizontal: 16,
+                borderBottomWidth: 1,
+                borderBottomColor: theme.text + "30",
+                backgroundColor: "transparent",
+                borderRadius: 0,
+              }
+            ]}
           />
         </View>
       </View>
 
-      <View style={{ height: 12 }} />
+      {/* Details Section */}
+      <View style={{ marginBottom: 24 }}>
+        <Text style={[S.text, { fontSize: 16, fontWeight: "600", marginBottom: 12 }]}>Details</Text>
+        <TextInput
+          value={details}
+          onChangeText={setDetails}
+          placeholder="What happened?"
+          placeholderTextColor={theme.text + "60"}
+          style={[
+            S.input, 
+            { 
+              minHeight: 100, 
+              textAlignVertical: "top",
+              fontSize: 16,
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+              borderWidth: 1,
+              borderColor: theme.text + "20",
+            }
+          ]}
+          multiline
+        />
+      </View>
 
-      <Text style={[S.text]}>Details</Text>
-      <TextInput
-        value={details}
-        onChangeText={setDetails}
-        placeholder="What happened?"
-        placeholderTextColor={theme.text + "88"}
-        style={[S.input, { minHeight: 90, textAlignVertical: "top" }]}
-        multiline
-      />
+      {/* Date Picker - Full Width */}
+      <View style={{ marginBottom: 16 }}>
+        <Pressable
+          style={[
+            {
+              backgroundColor: theme.tint,
+              paddingVertical: 16,
+              paddingHorizontal: 20,
+              borderRadius: 8,
+              alignItems: "center",
+              justifyContent: "center",
+            }
+          ]}
+          onPress={() => setDateOpen(true)}
+        >
+          <Text style={[
+            S.buttonText, 
+            { 
+              fontSize: 16, 
+              fontWeight: "700",
+              color: theme.card,
+              textTransform: "uppercase",
+              letterSpacing: 0.5
+            }
+          ]}>
+            {date.toDateString().toUpperCase()}
+          </Text>
+        </Pressable>
+      </View>
 
-      <View style={{ height: 12 }} />
-
+      {/* Solved Checkbox */}
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
+          marginBottom: 24,
         }}
       >
-        <Pressable
-          style={[S.button, { flex: 1, marginRight: 8 }]}
-          onPress={() => setDateOpen(true)}
-        >
-          <Text style={S.buttonText}>{date.toDateString()}</Text>
-        </Pressable>
-
-        <View
-          style={{ flexDirection: "row", alignItems: "center", marginLeft: 8 }}
-        >
-          <ExpoCheckbox
-            value={solved}
-            onValueChange={setSolved}
-            color={solved ? theme.tint : undefined}
-          />
-          <Text style={[S.text, { marginLeft: 6 }]}>Solved</Text>
-        </View>
+        <ExpoCheckbox
+          value={solved}
+          onValueChange={setSolved}
+          color={solved ? theme.tint : undefined}
+          style={{ marginRight: 12 }}
+        />
+        <Text style={[S.text, { fontSize: 16, fontWeight: "500" }]}>Solved</Text>
       </View>
 
-      <View style={{ height: 16 }} />
-
-      <Pressable style={S.button} onPress={onSave}>
-        <Text style={S.buttonText}>Save</Text>
+      {/* Save Button - Full Width */}
+      <Pressable 
+        style={[
+          {
+            backgroundColor: theme.tint,
+            paddingVertical: 16,
+            paddingHorizontal: 20,
+            borderRadius: 8,
+            alignItems: "center",
+            justifyContent: "center",
+          }
+        ]} 
+        onPress={onSave}
+      >
+        <Text style={[
+          S.buttonText, 
+          { 
+            fontSize: 16, 
+            fontWeight: "700",
+            color: theme.card,
+            textTransform: "uppercase",
+            letterSpacing: 0.5
+          }
+        ]}>
+          SAVE
+        </Text>
       </Pressable>
 
       <Modal
