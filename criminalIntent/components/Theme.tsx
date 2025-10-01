@@ -26,7 +26,7 @@ export const THEMES: Record<string, Theme> = {
     card: "#FFFFFF",
     tint: "#0277BD",
     buttonBg: "#BBDEFB",
-    inputBg: "#E1F5FE",
+    inputBg: "#F7FDFE",
   },
   morningForest: {
     name: "Morning Forest",
@@ -35,7 +35,7 @@ export const THEMES: Record<string, Theme> = {
     card: "#FFFFFF",
     tint: "#388E3C",
     buttonBg: "#C8E6C9",
-    inputBg: "#E8F5E8",
+    inputBg: "#F7FDF7",
   },
   sandstoneDunes: {
     name: "Sandstone Dunes",
@@ -44,7 +44,7 @@ export const THEMES: Record<string, Theme> = {
     card: "#FFFFFF",
     tint: "#FF6F00",
     buttonBg: "#FFE0B2",
-    inputBg: "#FFF8E1",
+    inputBg: "#FFFEF7",
   },
   deepSpace: {
     name: "Deep Space",

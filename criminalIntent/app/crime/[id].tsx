@@ -4,8 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ExpoCheckbox from "expo-checkbox";
 import * as ImagePicker from "expo-image-picker";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
     Alert,
     Image,
@@ -22,7 +22,6 @@ import { Crime, getCrime, upsertCrime } from "../../lib/storage";
 
 export default function CrimeDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const nav = useNavigation();
   const router = useRouter();
   const { theme } = useTheme();
   const S = stylesFromTheme(theme);
@@ -35,29 +34,6 @@ export default function CrimeDetail() {
 
   const [dateOpen, setDateOpen] = useState(false);
 
-  useLayoutEffect(() => {
-    nav.setOptions({
-      title: "Crime Detail",
-      headerBackVisible: false,
-      headerLeft: () => (
-        <Pressable
-          onPress={() => nav.goBack()}
-          hitSlop={8}
-          style={{ paddingHorizontal: 8 }}
-        >
-          <Ionicons name="chevron-back" size={24} color={theme.tint} />
-        </Pressable>
-      ),
-      headerRight: () => (
-        <Pressable
-          onPress={() => router.push("/settings")}
-          style={{ marginRight: 8 }}
-        >
-          <Ionicons name="settings-outline" size={24} color={theme.tint} />
-        </Pressable>
-      ),
-    });
-  }, [nav, router, theme.tint]);
 
   useEffect(() => {
     getCrime(id).then((c) => {
@@ -153,7 +129,7 @@ export default function CrimeDetail() {
             value={title}
             onChangeText={setTitle}
             placeholder="Title"
-            placeholderTextColor={theme.text + "60"}
+            placeholderTextColor={theme.text + "90"}
             style={[
               S.input, 
               { 

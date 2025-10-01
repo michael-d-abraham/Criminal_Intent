@@ -1,16 +1,14 @@
-import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
-import { Stack, useNavigation, useRouter } from "expo-router";
-import React, { useCallback, useLayoutEffect, useState } from "react";
-import { FlatList, Pressable, View } from "react-native";
+import { Stack, useRouter } from "expo-router";
+import React, { useCallback, useState } from "react";
+import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CrimeItem } from "../components/CrimeStuff";
 import { stylesFromTheme, useTheme } from "../components/Theme";
-import { Crime, loadCrimes, uuid } from "../lib/storage";
+import { Crime, loadCrimes } from "../lib/storage";
 
 export default function IndexScreen() {
   const router = useRouter();
-  const nav = useNavigation();
   const { theme } = useTheme();
   const S = stylesFromTheme(theme);
 
@@ -26,27 +24,6 @@ export default function IndexScreen() {
     }, [refresh])
   );
 
-  useLayoutEffect(() => {
-    nav.setOptions({
-      title: "Criminal Intent",
-      headerRight: () => (
-        <View style={{ flexDirection: "row", gap: 16, marginRight: 8 }}>
-          <Pressable
-            onPress={() => {
-              const id = uuid();
-              router.push({ pathname: "/crime/[id]", params: { id } });
-            }}
-          >
-            <Ionicons name="add" size={26} color={theme.tint} />
-          </Pressable>
-
-          <Pressable onPress={() => router.push("/settings")}>
-            <Ionicons name="settings-outline" size={24} color={theme.tint} />
-          </Pressable>
-        </View>
-      ),
-    });
-  }, [nav, router, theme.tint]);
 
   const renderItem = ({ item }: { item: Crime }) => (
     <CrimeItem
