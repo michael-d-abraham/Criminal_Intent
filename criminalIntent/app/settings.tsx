@@ -9,18 +9,17 @@ export default function SettingsScreen() {
   const { theme, setThemeName } = useTheme();
   const S = stylesFromTheme(theme);
 
-
   return (
     <SafeAreaView style={[S.screen, { padding: 12 }]}>
       <Stack.Screen options={{ headerShown: true }} />
 
+      <View style={{gap: 15, flex: 1, justifyContent: 'center' }}>
       <Text
         style={[S.text, { fontSize: 25, fontWeight: "800", marginBottom: 12, textAlign: "center" }]}
       >
         Pick A Theme
       </Text>
 
-      <View style={{gap: 15, flex: 1, justifyContent: 'center' }}>
         {Object.entries(THEMES).map(([key, t]) => (
           <ThemeButton
             key={key}
