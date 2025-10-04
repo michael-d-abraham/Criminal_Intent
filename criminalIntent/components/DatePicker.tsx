@@ -20,8 +20,9 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const [dateOpen, setDateOpen] = useState(false);
 
   const handleDateChange = (event: any, selectedDate?: Date) => {
-    if (selectedDate) {
-      onDateChange(selectedDate);
+    if (Platform.OS === 'android' && event.type === 'dismissed') {
+      setDateOpen(false);
+      return;
     }
   };
 
@@ -61,7 +62,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
             <DateTimePicker
               value={date}
               mode="date"
-              display={Platform.OS === "ios" ? "spinner" : "calendar"}
+              display={Platform.OS === "ios" ? "spinner" : "default"}
               textColor={theme.text}
               onChange={handleDateChange}
             />
